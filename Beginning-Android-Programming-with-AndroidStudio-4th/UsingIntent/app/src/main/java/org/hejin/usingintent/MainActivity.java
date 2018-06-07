@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    private int request_code = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +18,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         // startActivity(new Intent("org.hejin.usingintent.SecondeActivity"));
-        startActivity(new Intent(this, SecondActivity.class));
+        // startActivity(new Intent(this, SecondActivity.class));
+        startActivityForResult(new Intent(this,SecondActivity.class), request_code);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == request_code) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(this, data.getData().toString(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
