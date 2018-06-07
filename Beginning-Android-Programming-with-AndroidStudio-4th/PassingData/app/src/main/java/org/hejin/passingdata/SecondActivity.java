@@ -15,10 +15,10 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
         Toast.makeText(this, getIntent().getStringExtra("str1"), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,getIntent().getIntExtra("age1",0),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,getIntent().getIntExtra("age1",0),Toast.LENGTH_SHORT).show();
         Bundle bundle = getIntent().getExtras();
         Toast.makeText(this, bundle.getString("str2"), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,bundle.getInt("age2",0),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,bundle.getInt("age2",0),Toast.LENGTH_SHORT).show();
 
     }
 
