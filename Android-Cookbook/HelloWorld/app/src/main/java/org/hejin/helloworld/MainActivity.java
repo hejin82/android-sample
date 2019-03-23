@@ -1,9 +1,18 @@
 package org.hejin.helloworld;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,6 +23,41 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        HomeButtonReceive homeButtonReceive = new HomeButtonReceive();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        this.registerReceiver(homeButtonReceive, intentFilter);
+
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("title")
+                .setMessage("message")
+                .setPositiveButton("Save", new AlertDialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNeutralButton("cancel", new AlertDialog.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .create();
+        alertDialog.show();
+        Button button = (Button)findViewById(R.id.btnAlert);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
     }
 
     @Override
@@ -74,10 +118,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public class HomeButtonReceive extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG);
+        }
+    }
 
-
-
-
-
-
+    @Override
+    protected void onUserLeaveHint() {
+        Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG);
+    }
 }
