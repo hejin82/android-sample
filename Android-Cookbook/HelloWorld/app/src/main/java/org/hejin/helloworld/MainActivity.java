@@ -1,5 +1,6 @@
 package org.hejin.helloworld;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,12 +13,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "HelloWorld";
+    public static final int MY_REQUEST_CODE = 123;
     AlertDialog alertDialog;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         this.registerReceiver(homeButtonReceive, intentFilter);
 
 
+        textView =  (TextView) findViewById(R.id.textview);
 
         Button button = (Button)findViewById(R.id.btnAlert);
         button.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 alertDialog = new AlertDialog.Builder(v.getContext())
@@ -56,6 +60,28 @@ public class MainActivity extends AppCompatActivity {
                         })
                         .create();
                 alertDialog.show();
+            }
+        });
+
+        Button sendMail = (Button) findViewById(R.id.sendMail);
+        sendMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_TITLE, "My Title");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "My Subject");
+                intent.putExtra(Intent.EXTRA_TEXT, "Text");
+                startActivity(intent);
+            }
+        });
+
+        Button callSub = (Button) findViewById(R.id.btnSub);
+        callSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SubActivity.class);
+                startActivityForResult(intent, MY_REQUEST_CODE);
             }
         });
     }
@@ -121,13 +147,25 @@ public class MainActivity extends AppCompatActivity {
     public class HomeButtonReceive extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     protected void onUserLeaveHint() {
-        alertDialog.cancel();
-        Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG);
+        if (alertDialog != null) {
+            alertDialog.cancel();
+        }
+        Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == MY_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                final String data = intent.getExtras().getString(SubActivity.EXTRA_STRING_NAME);
+                textView.setText("SubActivity return: " + data);
+            }
+        }
     }
 }
