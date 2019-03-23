@@ -17,6 +17,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "HelloWorld";
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,32 +31,31 @@ public class MainActivity extends AppCompatActivity {
         this.registerReceiver(homeButtonReceive, intentFilter);
 
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle("title")
-                .setMessage("message")
-                .setPositiveButton("Save", new AlertDialog.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setNeutralButton("cancel", new AlertDialog.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .create();
-        alertDialog.show();
         Button button = (Button)findViewById(R.id.btnAlert);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                alertDialog = new AlertDialog.Builder(v.getContext())
+                        .setTitle("title")
+                        .setMessage("message")
+                        .setPositiveButton("Save", new AlertDialog.OnClickListener() {
 
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
+                            }
+                        })
+                        .setNeutralButton("cancel", new AlertDialog.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .create();
+                alertDialog.show();
             }
         });
     }
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onUserLeaveHint() {
+        alertDialog.cancel();
         Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG);
     }
 }
