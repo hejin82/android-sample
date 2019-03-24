@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         HomeButtonReceive homeButtonReceive = new HomeButtonReceive();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-        this.registerReceiver(homeButtonReceive, intentFilter);
+        //this.registerReceiver(homeButtonReceive, intentFilter);
 
 
         textView =  (TextView) findViewById(R.id.textview);
@@ -147,16 +147,17 @@ public class MainActivity extends AppCompatActivity {
     public class HomeButtonReceive extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "HomeButtonReceive", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     protected void onUserLeaveHint() {
         if (alertDialog != null) {
-            alertDialog.cancel();
+            alertDialog.dismiss();
+            alertDialog = null;
         }
-        Toast.makeText(getApplicationContext(), "Good bye", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "onUserLeaveHint", Toast.LENGTH_LONG).show();
     }
 
     @Override
